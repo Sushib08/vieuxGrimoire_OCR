@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 const app = express();
 
+// CORS
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -15,6 +16,15 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+// Middleware pour parser le corps des requêtes en JSON et en données de formulaire URL-encoded
+// Remplacement body-parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Router
+const userRoutes = require("./routes/user");
+app.use("/api/auth", userRoutes);
 
 mongoose
   .connect(
